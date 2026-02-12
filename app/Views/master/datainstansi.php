@@ -1,0 +1,201 @@
+<?= $this->extend('layout/main') ?>
+<?= $this->section('content') ?>
+
+<div class="card shadow-sm">
+<div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <h6 class="fw-bold mb-0">Data Instansi</h6>
+    <button class="btn btn-primary btn-sm"
+            id="btnTambah"
+            data-action="<?= base_url($url.'/store') ?>"
+            data-bs-toggle="modal"
+            data-bs-target="#modalForm">
+        <i class="bi bi-plus-lg"></i> Tambah Baru
+    </button>
+</div>
+
+<div class="table-responsive">
+<table class="table table-bordered align-middle mb-0">
+<thead class="table-light small">
+    <div class="card-body pb-0">
+    <form method="get">
+          <div class="row mb-3 align-items-center">
+                <label class="small">
+                    Tampilkan
+                    <select name="limit"
+                    class="form-select form-select-sm d-inline-block w-auto mx-1"
+                    onchange="this.form.submit()">
+                        <option value="10" <?= ($limit ?? 10)==10?'selected':'' ?>>10</option>
+                        <option value="25" <?= ($limit ?? 10)==25?'selected':'' ?>>25</option>
+                        <option value="50" <?= ($limit ?? 10)==50?'selected':'' ?>>50</option>
+
+                    </select>
+                    entri
+                </label>
+                 <div class="col-md-0 text-end">
+                <label class="small">
+                    Cari:
+                   <input type="search"
+                    name="q"
+                    value="<?= esc($q ?? '') ?>"
+                    class="form-control form-control-sm d-inline-block w-auto ms-1"
+                    placeholder="Cari kode / nama...">
+
+                </label>
+                </div>
+            </div>
+
+           
+    </form>
+</div>
+
+
+<tr>
+    <th width="40">No</th>
+    <th width="50">Aksi</th>
+    <th width="80">Kode</th>
+    <th width="180">Nama Instansi</th>
+    <th>Jenis</th>
+    <th width="60">Aktif</th>
+</tr>
+</thead>
+<tbody>
+<?php $no=1; foreach($data as $row): ?>
+<tr>
+<td><?= $no++ ?></td>
+<td>
+    <div class="dropdown">
+        <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+            Aksi
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <button
+                    class="dropdown-item btn-edit"
+                    data-id="<?= $row['id'] ?>"
+                    data-kode="<?= esc($row['kode']) ?>"
+                    data-nama="<?= esc($row['nama']) ?>"
+                    data-jenis="<?= $row['jenis_instansi_id'] ?>"
+                    data-aktif="<?= $row['aktif'] ?>"
+                    data-action="<?= base_url($url.'/update/'.$row['id']) ?>"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalForm">
+                    Edit
+                </button>
+            </li>
+            <li>
+                <a class="dropdown-item text-danger"
+                   href="<?= base_url($url.'/delete/'.$row['id']) ?>"
+                   onclick="return confirm('Hapus data?')">
+                   Hapus
+                </a>
+            </li>
+        </ul>
+    </div>
+</td>
+<td><?= esc($row['kode']) ?></td>
+<td><?= esc($row['nama']) ?></td>
+<td><?= esc($row['jenis_nama']) ?></td>
+<td class="text-center"><?= $row['aktif']==1 ? '✔' : '✖' ?></td>
+</tr>
+<?php endforeach ?>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- MODAL TAMBAH & EDIT -->
+<div class="modal fade" id="modalForm">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+
+<form method="post" id="formInstansi">
+<?= csrf_field() ?>
+
+<div class="modal-header">
+    <h6 class="modal-title" id="modalTitle">Tambah Data Instansi</h6>
+    <button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<div class="row mb-2">
+    <div class="col-md-4">
+        <label class="small">Kode</label>
+        <input name="kode" id="kode" class="form-control form-control-sm" required>
+    </div>
+    <div class="col-md-8">
+        <label class="small">Nama Instansi</label>
+        <input name="nama" id="nama" class="form-control form-control-sm" required>
+    </div>
+</div>
+
+<label class="small">Jenis Instansi</label>
+<select name="jenis_instansi_id" id="jenis" class="form-select form-select-sm mb-2" required>
+    <option value="">- Pilih -</option>
+    <?php foreach($jenis as $j): ?>
+        <option value="<?= $j['id'] ?>"><?= esc($j['nama']) ?></option>
+    <?php endforeach ?>
+</select>
+
+<label class="small">Status</label><br>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="aktif" value="1" checked>
+    <label class="form-check-label">Aktif</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="aktif" value="0">
+    <label class="form-check-label">Tidak</label>
+</div>
+
+</div>
+
+
+<div class="modal-footer">
+    <button class="btn btn-primary btn-sm">Simpan</button>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+ <div class="card-footer bg-white d-flex justify-content-between align-items-center small">
+        <div>
+            Menampilkan 1 sampai <?= count($data) ?> dari <?= count($data) ?> entri
+        </div>
+        <div>
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled"><a class="page-link">Sebelumnya</a></li>
+                    <li class="page-item active"><a class="page-link">1</a></li>
+                    <li class="page-item disabled"><a class="page-link">Selanjutnya</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+<script>
+const modalTitle = document.getElementById('modalTitle');
+const form = document.getElementById('formInstansi');
+
+document.getElementById('btnTambah').addEventListener('click', function () {
+    modalTitle.innerText = 'Tambah Data Instansi';
+    form.action = this.dataset.action;
+    form.reset();
+});
+
+document.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', function () {
+        modalTitle.innerText = 'Edit Data Instansi';
+        form.action = this.dataset.action;
+
+        document.getElementById('kode').value  = this.dataset.kode;
+        document.getElementById('nama').value  = this.dataset.nama;
+        document.getElementById('jenis').value = this.dataset.jenis;
+
+        document.querySelectorAll('[name="aktif"]').forEach(r => {
+            r.checked = r.value === this.dataset.aktif;
+        });
+    });
+});
+</script>
+
+<?= $this->endSection() ?>
