@@ -4,7 +4,7 @@
 <?= $this->section('content') ?>
 
 <h5 class="fw-bold mb-1">Dashboard Laporan Diklat</h5>
-<p class="text-muted">Ringkasan data pelatihan internal & eksternal</p>
+<p class="text-muted">Ringkasan data pelatihan Internal & Eksternal</p>
 
 <div class="row g-3 mb-4">
 

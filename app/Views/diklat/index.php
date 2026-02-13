@@ -78,17 +78,6 @@
                     entri
                 </label>
             </div>
-
-            <!-- <div class="col-md-6 text-end">
-                <label class="small">
-                    Cari:
-                    <input type="search"
-                        id="liveSearch"
-                        class="form-control form-control-sm d-inline-block w-auto ms-1"
-                        placeholder="Cari...">
-
-                </label>
-            </div> -->
         </div>
     </div>
 
