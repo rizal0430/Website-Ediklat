@@ -27,4 +27,10 @@ class Dashboard extends BaseController
             'eksternal'=> $eksternal
         ]);
     }
+    public function __construct()
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login');
+        }
+    }
 }

@@ -18,19 +18,22 @@
     <div class="card-body pb-0">
     <form method="get">
         <div class="row mb-3 align-items-center">
-            <div class="col-md-6">
-                <label class="small">
-                    Tampilkan
-                    <select name="limit"
-                            class="form-select form-select-sm d-inline-block w-auto mx-1"
-                            onchange="this.form.submit()">
-                        <option value="10" <?= ($limit ?? 10)==10?'selected':'' ?>>10</option>
-                        <option value="25" <?= ($limit ?? 10)==25?'selected':'' ?>>25</option>
-                        <option value="50" <?= ($limit ?? 10)==50?'selected':'' ?>>50</option>
-                    </select>
-                    entri
-                </label>
-            </div>
+           <div class="col-md-6">
+    <label class="small">
+        Tampilkan
+        <select name="limit"
+                class="form-select form-select-sm d-inline-block w-auto mx-1"
+                onchange="this.form.submit()">
+
+            <option value="10" <?= $limit==10?'selected':'' ?>>10</option>
+            <option value="25" <?= $limit==25?'selected':'' ?>>25</option>
+            <option value="50" <?= $limit==50?'selected':'' ?>>50</option>
+            <option value="all" <?= $limit=='all'?'selected':'' ?>>Semua</option>
+
+        </select>
+        entri
+    </label>
+</div>
 
             <div class="col-md-6 text-end">
                 <label class="small">

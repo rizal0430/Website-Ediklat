@@ -12,28 +12,48 @@ class Auth extends BaseController
         return view('App\Modules\Auth\Views\login');
     }
 
-    public function process()
+    public function register()
+    {
+        return view('App\Modules\Auth\Views\register');
+    }
+
+    public function processLogin()
+    {
+        $session = session();
+        $model = new UserModel();
+
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
+
+        $user = $model->where('email', $email)->first();
+
+        if ($user && password_verify($password, $user['password'])) {
+
+            $session->set([
+                'user_id' => $user['id'],
+                'username' => $user['username'],
+                'logged_in' => true
+            ]);
+
+            return redirect()->to('/dashboard');
+        }
+
+        return redirect()->back()->with('error', 'Email atau password salah');
+    }
+
+    public function processRegister()
     {
         $model = new UserModel();
 
-        $user = $model->where('email', $this->request->getPost('email'))->first();
+        $data = [
+            'username' => $this->request->getPost('username'),
+            'email'    => $this->request->getPost('email'),
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+        ];
 
-        if (!$user) {
-            return redirect()->back()->with('error', 'Email tidak ditemukan');
-        }
+        $model->insert($data);
 
-        if (!password_verify($this->request->getPost('password'), $user['password'])) {
-            return redirect()->back()->with('error', 'Password salah');
-        }
-
-        session()->set([
-            'user_id' => $user['id'],
-            'nama'    => $user['nama'],
-            'role'    => $user['role'],
-            'logged'  => true,
-        ]);
-
-        return redirect()->to('/dashboard');
+        return redirect()->to('/login');
     }
 
     public function logout()

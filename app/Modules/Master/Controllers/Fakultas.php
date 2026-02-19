@@ -13,9 +13,8 @@ class Fakultas extends BaseController
     {
         $this->model = new FakultasModel();
     }
-
-    public function index()
-    {
+public function index()
+{
     $q     = $this->request->getGet('q');
     $limit = $this->request->getGet('limit') ?? 10;
 
@@ -29,17 +28,26 @@ class Fakultas extends BaseController
             ->groupEnd();
     }
 
-    $data = $builder->paginate($limit, 'fakultas');
+    // 🔥 HANDLE OPSI SEMUA
+    if ($limit === 'all') {
+        $data  = $builder->findAll();
+        $pager = null;
+    } else {
+        $limit = (int) $limit; // pastikan integer
+        $data  = $builder->paginate($limit, 'fakultas');
+        $pager = $this->model->pager;
+    }
 
     return view('master/datafakultas', [
         'title'   => 'Data Fakultas',
         'url'     => 'master/data-fakultas',
         'data'    => $data,
-        'pager'   => $this->model->pager,
+        'pager'   => $pager,
         'q'       => $q,
         'limit'   => $limit
     ]);
-    }
+}
+
 
 
     public function store()

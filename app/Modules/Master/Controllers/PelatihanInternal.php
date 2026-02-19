@@ -15,7 +15,7 @@ class PelatihanInternal extends BaseController
     }
 
    public function index()
-    {
+{
     $q     = $this->request->getGet('q');
     $limit = $this->request->getGet('limit') ?? 10;
 
@@ -28,16 +28,25 @@ class PelatihanInternal extends BaseController
                        ->groupEnd();
     }
 
-    $data = $query->paginate($limit, 'internal');
+    // 🔥 HANDLE LIMIT
+    if ($limit === 'all') {
+        $data  = $query->findAll();   // ambil semua
+        $pager = null;
+    } else {
+        $limit = (int) $limit;        // paksa jadi integer
+        $data  = $query->paginate($limit, 'internal');
+        $pager = $this->model->pager;
+    }
 
     return view('master/pelatihan_internal', [
         'title' => 'Pelatihan Internal',
         'data'  => $data,
-        'pager' => $this->model->pager,
+        'pager' => $pager,
         'q'     => $q,
-        'limit'=> $limit
+        'limit' => $limit
     ]);
-    }
+}
+
 
 
 

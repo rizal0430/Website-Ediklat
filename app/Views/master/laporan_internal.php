@@ -4,7 +4,7 @@
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <h5 class="fw-bold mb-0 text-center">
-            Pelatihan Internal Karyawan RSUD Ashari
+            Pelatihan Internal Karyawan RSU PKU DELANGGU
         </h5>
     </div>
 

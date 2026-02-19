@@ -1,7 +1,22 @@
 <?php
 
-use CodeIgniter\Router\RouteCollection;
+namespace Config;
 
+// Import the required controller classes to resolve namespace errors
+use App\Controllers\ApiTest;
+use App\Controllers\Dashboard;
+use App\Controllers\DataInstansi;
+use App\Controllers\Diklat;
+use App\Controllers\Fakultas;
+use App\Controllers\JenisInstansi;
+use App\Controllers\Kegiatan;
+use App\Controllers\Laporan;
+use App\Controllers\PelatihanEksternal;
+use App\Controllers\PelatihanInternal;
+use App\Controllers\Ruangan;
+use App\Controllers\TempatTidur;
+
+// ... (rest of your Routes.php file remains unchanged)
 /**
  * @var RouteCollection $routes
  */
@@ -10,23 +25,37 @@ use CodeIgniter\Router\RouteCollection;
 // DEFAULT
 // ===============================
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Dashboard');
+$routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(false);
 
+$routes->get('dashboard', '\App\Modules\Dashboard\Controllers\Dashboard::index');
+$routes->get('/', '\App\Modules\Auth\Controllers\Auth::login');
 // ===============================
-// ROOT
+// ROOT Api
 // ===============================
+
+$routes->group('api', function($routes) {
+    $routes->get('diklat', '\App\Modules\Diklat\Controllers\Api\DiklatApi::index');
+    $routes->get('diklat/(:num)', '\App\Modules\Diklat\Controllers\Api\DiklatApi::show/$1');
+    $routes->post('diklat', '\App\Modules\Diklat\Controllers\Api\DiklatApi::create');
+    $routes->post('api/diklat', '\App\Modules\Diklat\Controllers\Api\DiklatApi::create');
+
+});
+
+$routes->get('api-test', 'ApiTest::index');
+
 
 
 // ===============================
 // ===============================
 // DASHBOARD (MODULE)
 // ===============================
-$routes->get('/', '\App\Modules\Dashboard\Controllers\Dashboard::index');
-$routes->get('dashboard', '\App\Modules\Dashboard\Controllers\Dashboard::index');
+// $routes->get('/', '\App\Modules\Dashboard\Controllers\Dashboard::index');
+
+
 
 
 // ===============================
@@ -164,6 +193,10 @@ $routes->group('diklat',['namespace'=>'App\Modules\Diklat\Controllers'],function
 // ===============================
 // AUTH
 // ===============================
-$routes->get('login', 'App\Modules\Auth\Controllers\Auth::login');
-$routes->post('login', 'App\Modules\Auth\Controllers\Auth::attempt');
-$routes->get('logout', 'App\Modules\Auth\Controllers\Auth::logout');
+$routes->group('', ['namespace' => 'App\Modules\Auth\Controllers'], function($routes){
+    $routes->get('login', 'Auth::login');
+    $routes->get('register', 'Auth::register');
+    $routes->post('process-login', 'Auth::processLogin');
+    $routes->post('process-register', 'Auth::processRegister');
+    $routes->get('logout', 'Auth::logout');
+});

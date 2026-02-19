@@ -15,9 +15,10 @@ class Ruangan extends BaseController
     }
 
     public function index()
-    {
+{
     $q     = $this->request->getGet('q');
-    $limit = $this->request->getGet('limit') ?? 10;
+    $limit = (int) $this->request->getGet('limit');
+    $limit = $limit > 0 ? $limit : 10;
 
     $query = $this->model;
 
@@ -34,9 +35,10 @@ class Ruangan extends BaseController
         'data'  => $data,
         'pager' => $this->model->pager,
         'q'     => $q,
-        'limit'=> $limit
+        'limit' => $limit
     ]);
-    }
+}
+
 
 
     public function store()

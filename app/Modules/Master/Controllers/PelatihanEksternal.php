@@ -15,9 +15,16 @@ class PelatihanEksternal extends BaseController
     }
 
    public function index()
-    {
+{
     $q     = $this->request->getGet('q');
-    $limit = $this->request->getGet('limit') ?? 10;
+    $limit = $this->request->getGet('limit');
+
+    // default 10 kalau kosong
+    if (!$limit || $limit === 'all') {
+        $limit = 10;
+    }
+
+    $limit = (int) $limit; // WAJIB cast ke int
 
     $query = $this->model->where('jenis', 'eksternal');
 
@@ -36,9 +43,10 @@ class PelatihanEksternal extends BaseController
         'data'  => $data,
         'pager' => $this->model->pager,
         'q'     => $q,
-        'limit'=> $limit
+        'limit' => $limit
     ]);
-    }
+}
+
     public function store()
     {   
         $data = $this->request->getPost();

@@ -10,10 +10,9 @@ class UserModel extends Model
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
-        'nama',
+        'username',
         'email',
-        'password',
-        'role'
+        'password'
     ];
 
     protected $useTimestamps = false;

@@ -25,8 +25,12 @@ class Diklat extends BaseController
         $this->diklat = new DiklatModel();
     }
 
-    public function index()
-    {
+    
+
+   public function index()
+{
+    $limit = $this->request->getGet('limit') ?? 10;
+
     $filter = [
         'instansi_id'   => $this->request->getGet('instansi_id'),
         'fakultas_id'   => $this->request->getGet('fakultas_id'),
@@ -34,14 +38,27 @@ class Diklat extends BaseController
         'status_diklat' => $this->request->getGet('status_diklat'),
     ];
 
+    $builder = $this->diklat->getFiltered($filter);
+
+    if ($limit === 'all') {
+        $data = $builder->get()->getResultArray();
+        $pager = null;
+    } else {
+        $limit = (int) $limit;
+        $data = $builder->get($limit)->getResultArray();
+        $pager = null;
+    }
+
     return view('diklat/index', [
-        'data'     => $this->diklat->getFiltered($filter),
+        'data'     => $data,
+        'pager'    => $pager,
         'instansi' => (new DataInstansiModel())->findAll(),
         'fakultas' => (new FakultasModel())->findAll(),
         'kegiatan' => (new KegiatanModel())->findAll(),
-        'filter'   => $filter
+        'filter'   => $filter,
+        'limit'    => $limit
     ]);
-    }
+}
 
 
     public function store()

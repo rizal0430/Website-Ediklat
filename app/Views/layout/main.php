@@ -1,6 +1,7 @@
 <?php
 $appInfo = new \Config\AppInfo();
 ?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -122,6 +123,15 @@ $appInfo = new \Config\AppInfo();
 
             </ul>
         </div>
+                            <?php if(session()->get('logged_in')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('logout') ?>">Logout</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('login') ?>">Login</a>
+                        </li>
+                    <?php endif; ?>
     </div>
 </nav>
 
@@ -129,6 +139,20 @@ $appInfo = new \Config\AppInfo();
 <div class="container-fluid p-3">
     <?= $this->renderSection('content') ?>
 </div>
+
+<footer class="text-center py-3 mt-4" 
+        style="background: #f8f9fa; border-top:1px solid #ddd;">
+    
+    <small>
+        © <?= date('Y') ?> E-Diklat RS | 
+        RSU PKU DELANGGU
+    </small>
+
+</footer>
+
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

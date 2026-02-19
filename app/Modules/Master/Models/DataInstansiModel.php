@@ -17,9 +17,8 @@ class DataInstansiModel extends Model
     ];
 
    public function getAll($q = null, $limit = 10)
-    {
+{
     $builder = $this->db->table('data_instansi i')
-
         ->select('i.*, j.nama AS jenis_nama')
         ->join('jenis_instansi j','j.id=i.jenis_instansi_id','left');
 
@@ -31,8 +30,14 @@ class DataInstansiModel extends Model
         ->groupEnd();
     }
 
-    return $builder->limit($limit)->get()->getResultArray();
+    // 🔥 HANDLE OPSI SEMUA
+    if ($limit !== 'all') {
+        $builder->limit((int)$limit);
     }
+
+    return $builder->get()->getResultArray();
+}
+
 
 
     public function getDetail($id)

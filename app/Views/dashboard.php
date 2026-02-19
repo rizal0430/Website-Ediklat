@@ -1,5 +1,5 @@
 
-<h1 style="color:red">INI DASHBOARD MODULE</h1>
+<h1 style="color:red">DASHBOARD MODULE</h1>
 <?= $this->extend('layout/main') ?>
 <?= $this->section('content') ?>
 

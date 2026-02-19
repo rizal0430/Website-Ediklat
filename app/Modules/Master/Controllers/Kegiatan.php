@@ -14,16 +14,18 @@ class Kegiatan extends BaseController
         $this->model = new KegiatanModel();
     }
 
-   public function index()
-    {   
-    $q     = $this->request->getGet('q');
-    $limit = $this->request->getGet('limit') ?? 10;
+  public function index()
+{
+    $q     = $this->getSearch();
+    $limit = $this->getLimit();
 
     $query = $this->model;
 
     if ($q) {
-        $query = $query->like('kode', $q)
-                       ->orLike('nama', $q);
+        $query = $query->groupStart()
+                       ->like('kode', $q)
+                       ->orLike('nama', $q)
+                       ->groupEnd();
     }
 
     $data = $query->paginate($limit, 'kegiatan');
@@ -34,9 +36,10 @@ class Kegiatan extends BaseController
         'data'  => $data,
         'pager' => $this->model->pager,
         'q'     => $q,
-        'limit'=> $limit
+        'limit' => $limit
     ]);
-    }
+}
+
 
 
     public function store()

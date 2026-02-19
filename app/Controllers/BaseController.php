@@ -42,4 +42,15 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
         // $this->session = service('session');
     }
+    protected function getLimit(int $default = 10): int
+{
+    $limit = (int) $this->request->getGet('limit');
+    return $limit > 0 ? $limit : $default;
+}
+
+protected function getSearch(): ?string
+{
+    return $this->request->getGet('q');
+}
+
 }

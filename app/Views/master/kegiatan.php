@@ -14,36 +14,43 @@
         </button>
     </div>
     
-    <form method="get">
-    <div class="row mb-3 align-items-center">
+    <div class="card-body pb-0">
+        <form method="get">
+        <div class="row mb-3 align-items-center">
 
-        <div class="col-md-6">
-            <label class="small">
-                Tampilkan
-                <select name="limit"
-                        class="form-select form-select-sm d-inline-block w-auto mx-1"
-                        onchange="this.form.submit()">
-                    <option value="10" <?= ($limit ?? 10)==10?'selected':'' ?>>10</option>
-                    <option value="25" <?= ($limit ?? 10)==25?'selected':'' ?>>25</option>
-                    <option value="50" <?= ($limit ?? 10)==50?'selected':'' ?>>50</option>
-                </select>
-                entri
-            </label>
-        </div>
+            <div class="col-md-6">
+    <label class="small">
+        Tampilkan
+        <select name="limit"
+                class="form-select form-select-sm d-inline-block w-auto mx-1"
+                onchange="this.form.submit()">
 
-        <div class="col-md-6 text-end">
-            <label class="small">
-                Cari:
-                <input type="search"
-                    name="q"
-                    value="<?= esc($q ?? '') ?>"
-                    class="form-control form-control-sm d-inline-block w-auto ms-1"
-                    placeholder="Cari kode / nama...">
-            </label>
+            <option value="10" <?= $limit==10?'selected':'' ?>>10</option>
+            <option value="25" <?= $limit==25?'selected':'' ?>>25</option>
+            <option value="50" <?= $limit==50?'selected':'' ?>>50</option>
+            <option value="1000" <?= $limit==1000?'selected':'' ?>>Semua</option>
+
+        </select>
+        entri
+    </label>
+</div>
+
+
+            <div class="col-md-6 text-end">
+                <label class="small">
+                    Cari:
+                    <input type="search"
+                        name="q"
+                        value="<?= esc($q ?? '') ?>"
+                        class="form-control form-control-sm d-inline-block w-auto ms-1"
+                        placeholder="Cari kode / nama...">
+                </label>
+            </div>
+
         </div>
+        </form>
 
     </div>
-    </form>
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover mb-0 align-middle">

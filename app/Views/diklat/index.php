@@ -16,70 +16,78 @@
     
 
     <!-- FILTER -->
-    <div class="card-body pb-0">
-        <form method="get">
-            <div class="row g-2 mb-3">
-                <div class="col-md-3">
-                    <select name="instansi_id" class="form-select form-select-sm">
-                        <option value="">- Semua Instansi -</option>
-                        <?php foreach ($instansi as $i): ?>
-                            <option value="<?= $i['id'] ?>"><?= esc($i['nama']) ?></option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
+    <form method="get">
+    <div class="row g-2 mb-3">
 
-                <div class="col-md-3">
-                    <select name="fakultas_id" class="form-select form-select-sm">
-                        <option value="">- Semua Fakultas -</option>
-                        <?php foreach ($fakultas as $f): ?>
-                            <option value="<?= $f['id'] ?>"><?= esc($f['nama']) ?></option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
+        <div class="col-md-3">
+            <select name="instansi_id" class="form-select form-select-sm">
+                <option value="">- Semua Instansi -</option>
+                <?php foreach ($instansi as $i): ?>
+                    <option value="<?= $i['id'] ?>"
+                        <?= ($filter['instansi_id']==$i['id'])?'selected':'' ?>>
+                        <?= esc($i['nama']) ?>
+                    </option>
+                <?php endforeach ?>
+            </select>
+        </div>
 
-                <div class="col-md-3">
-                    <select name="kegiatan_id" class="form-select form-select-sm">
-                        <option value="">- Semua Kegiatan -</option>
-                        <?php foreach ($kegiatan as $k): ?>
-                            <option value="<?= $k['id'] ?>"><?= esc($k['nama']) ?></option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
+        <div class="col-md-3">
+            <select name="fakultas_id" class="form-select form-select-sm">
+                <option value="">- Semua Fakultas -</option>
+                <?php foreach ($fakultas as $f): ?>
+                    <option value="<?= $f['id'] ?>"
+                        <?= ($filter['fakultas_id']==$f['id'])?'selected':'' ?>>
+                        <?= esc($f['nama']) ?>
+                    </option>
+                <?php endforeach ?>
+            </select>
+        </div>
 
-                <div class="col-md-2">
-                   <select name="status_diklat" class="form-select">
-                        <option value="semua" <?= ($filter['status_diklat']=='semua')?'selected':'' ?>>- Semua -</option>
-                        <option value="belum" <?= ($filter['status_diklat']=='belum')?'selected':'' ?>>Belum</option>
-                        <option value="aktif" <?= ($filter['status_diklat']=='aktif')?'selected':'' ?>>Aktif</option>
-                        <option value="selesai" <?= ($filter['status_diklat']=='selesai')?'selected':'' ?>>Selesai</option>
+        <div class="col-md-3">
+            <select name="kegiatan_id" class="form-select form-select-sm">
+                <option value="">- Semua Kegiatan -</option>
+                <?php foreach ($kegiatan as $k): ?>
+                    <option value="<?= $k['id'] ?>"
+                        <?= ($filter['kegiatan_id']==$k['id'])?'selected':'' ?>>
+                        <?= esc($k['nama']) ?>
+                    </option>
+                <?php endforeach ?>
+            </select>
+        </div>
 
-                    </select>
+        <div class="col-md-2">
+            <select name="status_diklat" class="form-select form-select-sm">
+                <option value="">- Semua -</option>
+                <option value="belum" <?= ($filter['status_diklat']=='belum')?'selected':'' ?>>Belum</option>
+                <option value="aktif" <?= ($filter['status_diklat']=='aktif')?'selected':'' ?>>Aktif</option>
+                <option value="selesai" <?= ($filter['status_diklat']=='selesai')?'selected':'' ?>>Selesai</option>
+            </select>
+        </div>
 
-
-                </div>
-
-                <div class="col-md-1">
-                    <button class="btn btn-sm btn-primary w-100">Cari</button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="card-body pb-0">
-        <div class="row mb-3 align-items-center">
-            <div class="col-md-6">
-                <label class="small">
-                    Tampilkan
-                    <select class="form-select form-select-sm d-inline-block w-auto mx-1">
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                    </select>
-                    entri
-                </label>
-            </div>
+        <div class="col-md-1">
+            <button class="btn btn-sm btn-primary w-100">Cari</button>
         </div>
     </div>
+
+    <div class="row mb-3 align-items-center">
+        <div class="col-md-6">
+            <label class="small">
+                Tampilkan
+                <select name="limit"
+                        class="form-select form-select-sm d-inline-block w-auto mx-1"
+                        onchange="this.form.submit()">
+
+                    <option value="10" <?= $limit==10?'selected':'' ?>>10</option>
+                    <option value="25" <?= $limit==25?'selected':'' ?>>25</option>
+                    <option value="50" <?= $limit==50?'selected':'' ?>>50</option>
+                    <option value="all" <?= $limit=='all'?'selected':'' ?>>Semua</option>
+                </select>
+                entri
+            </label>
+        </div>
+    </div>
+</form>
+
 
     <!-- TABLE -->
     <div class="table-responsive">

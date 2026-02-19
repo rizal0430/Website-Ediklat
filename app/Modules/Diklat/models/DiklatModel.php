@@ -14,15 +14,15 @@ class DiklatModel extends Model
     'instansi_id',
     'fakultas_id',
     'kegiatan_id',
-    'tgl_mulai',
-    'tgl_akhir',
     'ketua',
+    'no_telp',
     'ruangan',
     'keterangan',
+    'tgl_mulai',
+    'tgl_akhir',
     'status_diklat',
     'status_bayar',
-    'total_biaya',
-    'no_telp',   // ← WAJIB ADA
+    'total_biaya'
     ];
 
 
@@ -60,8 +60,8 @@ class DiklatModel extends Model
             ->get()->getRowArray();
     }
 
-    public function getFiltered($filter)
-    {
+    public function getFilteredQuery($filter)
+{
     $builder = $this->db->table('data_diklat d')
         ->select('
             d.*,
@@ -93,8 +93,44 @@ class DiklatModel extends Model
         $builder->where('d.status_diklat', $filter['status_diklat']);
     }
 
-    return $builder->get()->getResultArray();
+    return $builder;
+}
+public function getFiltered($filter)
+{
+    $builder = $this->db->table('data_diklat d')
+        ->select('
+            d.*,
+            i.nama AS nama_instansi,
+            f.nama AS nama_fakultas,
+            k.nama AS nama_kegiatan,
+            COUNT(p.id) AS peserta
+        ')
+        ->join('data_instansi i','i.id=d.instansi_id','left')
+        ->join('data_fakultas f','f.id=d.fakultas_id','left')
+        ->join('kegiatan k','k.id=d.kegiatan_id','left')
+        ->join('data_peserta_diklat p','p.diklat_id=d.id','left')
+        ->groupBy('d.id')
+        ->orderBy('d.id','DESC');
+
+    if (!empty($filter['instansi_id'])) {
+        $builder->where('d.instansi_id', $filter['instansi_id']);
     }
+
+    if (!empty($filter['fakultas_id'])) {
+        $builder->where('d.fakultas_id', $filter['fakultas_id']);
+    }
+
+    if (!empty($filter['kegiatan_id'])) {
+        $builder->where('d.kegiatan_id', $filter['kegiatan_id']);
+    }
+
+    if (!empty($filter['status_diklat'])) {
+        $builder->where('d.status_diklat', $filter['status_diklat']);
+    }
+
+    return $builder;
+}
+
 
     }
 

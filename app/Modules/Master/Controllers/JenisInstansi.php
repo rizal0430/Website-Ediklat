@@ -15,28 +15,39 @@ class JenisInstansi extends BaseController
     }
 
     public function index()
-    {
+{
     $q     = $this->request->getGet('q');
     $limit = $this->request->getGet('limit') ?? 10;
 
     $query = $this->model;
 
     if ($q) {
-        $query = $query->like('kode', $q)
-                       ->orLike('nama', $q);
+        $query = $query->groupStart()
+                       ->like('kode', $q)
+                       ->orLike('nama', $q)
+                       ->groupEnd();
     }
 
-    $data = $query->paginate($limit, 'jenis');
+    // 🔥 HANDLE OPSI SEMUA
+    if ($limit === 'all') {
+        $data  = $query->findAll();
+        $pager = null;
+    } else {
+        $limit = (int) $limit; // pastikan integer
+        $data  = $query->paginate($limit, 'jenis');
+        $pager = $this->model->pager;
+    }
 
     return view('master/jenisinstansi', [
         'title' => 'Jenis Instansi',
         'data'  => $data,
-        'pager' => $this->model->pager,
+        'pager' => $pager,
         'q'     => $q,
         'limit' => $limit,
         'url'   => 'master/jenis-instansi'
     ]);
-    }
+}
+
 
 
    public function create()
